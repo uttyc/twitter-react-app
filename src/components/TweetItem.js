@@ -5,7 +5,23 @@ import RetweetLogo from "../assets/retweet.svg";
 import CommentLogo from "../assets/comment.svg";
 export default class TweetItem extends Component {
   render() {
-    const { text, comment_count, retweet_count, fav_count } = this.props.tweet;
+    const {
+      id,
+      text,
+      comment_count,
+      retweet_count,
+      fav_count,
+      comments,
+    } = this.props.tweet;
+    const tweetComments = comments.map((c) => {
+      return (
+        <Card className="container-margin" key={c.id}>
+          <Card.Body>
+            <blockquote >{c.text}</blockquote>
+          </Card.Body>
+        </Card>
+      );
+    });
     return (
       <Container className="container-margin">
         <Row>
@@ -17,18 +33,31 @@ export default class TweetItem extends Component {
                 </blockquote>
               </Card.Body>
               <Card.Footer>
-                <span class="footer-button">
-                  <img src={RetweetLogo} alt="retweet-button"/>
-                </span>{" "}
-                {retweet_count} |{" "}
-                <span class="footer-button">
-                  <img src={CommentLogo} alt="comment-button"/>
-                </span>{" "}
-                {comment_count} |{" "}
-                <span class="footer-button">
-                  <img src={LikeLogo} alt="like-button"/>
-                </span>{" "}
-                {fav_count}
+                  <span className="footer-button">
+                    <img
+                      src={RetweetLogo}
+                      alt="retweet-button"
+                      onClick={this.props.retweetTweet.bind(this, id)}
+                    />
+                  </span>{" "}
+                  {retweet_count} |{" "}
+                  <span className="footer-button">
+                    <img
+                      src={CommentLogo}
+                      alt="comment-button"
+                      onClick={this.props.commentTweet.bind(this, id)}
+                    />
+                  </span>{" "}
+                  {comment_count} |{" "}
+                  <span className="footer-button">
+                    <img
+                      src={LikeLogo}
+                      alt="like-button"
+                      onClick={this.props.likeTweet.bind(this, id)}
+                    />
+                  </span>{" "}
+                  {fav_count}
+                    {tweetComments}
               </Card.Footer>
             </Card>
           </Col>
@@ -37,4 +66,3 @@ export default class TweetItem extends Component {
     );
   }
 }
-
